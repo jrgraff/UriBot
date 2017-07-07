@@ -6,7 +6,6 @@ from telepot.namedtuple import InlineQueryResultArticle, InputTextMessageContent
 
 def on_inline_query(msg):
     query_id, from_id, query_string = telepot.glance(msg, flavor='inline_query')
-    print ('Inline Query:', query_id, from_id, query_string)
 
     articles = []
     acesso = query_string.split()
