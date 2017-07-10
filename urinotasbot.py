@@ -32,7 +32,6 @@ def on_inline_query(msg):
 
 def on_chosen_inline_result(msg):
     result_id, from_id, query_string = telepot.glance(msg, flavor='chosen_inline_result')
-    print ('Chosen Inline Result:', result_id, from_id, query_string)
 
 TOKEN = sys.argv[1]  # get token from command-line
 
