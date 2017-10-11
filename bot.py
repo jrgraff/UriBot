@@ -3,7 +3,7 @@
 import sys
 import telepot
 import time
-from urinotas.py import getNotas
+from urinotas import getNotas
 
 def handle(msg):
     try:
