@@ -16,7 +16,13 @@ def handle(msg):
     command = command.split(' ')
 
     if command[0] == '/notas':
-        bot.sendMessage(chat_id, "isso foi apenas um teste", reply_to_message_id = msg_id)
+        try:
+            notas = getNotas(command[1], command[2])
+            for nota in notas.keys():
+                resultado =  nota + '\n' + notas[nota]
+            bot.sendMessage(chat_id, resultado, reply_to_message_id = msg_id)
+        except:
+            bot.sendMessage(chat_id, "Digite como o exemplo '/notas <pasta> <senha>'", reply_to_message_id = msg_id)
 
 TOKEN = sys.argv[1]  # get token from command-line
 
