@@ -2,17 +2,20 @@
 
 import sys
 import telepot
-import time
+import time, datetime
 from urinotas import getNotas
+
+now = datetime.datetime.now()
 
 pasta = pasta
 senha = senha
+meu_id = asdasd
 
 def verificaNota():
     try:
         if notasOld == getNotas(pasta, senha):
-	    return "true"
-        return "false"
+	    return "False"
+        return "True"
     except:
         return "Verifique o codigo pois aconteceu algum erro"
 
@@ -33,6 +36,6 @@ notasOld = getNotas(pasta, senha)
 print('Verificando...')
 
 while 1:
-    time.sleep(1800)
-    print "Verificado as: %s" % time.ctime()
-    bot.sendMessage(seu_id, verificaNota())
+    if(now.hour < 21) and (now.hour > 8)
+    	time.sleep(25)
+    	bot.sendMessage(seu_id, verificaNota())
