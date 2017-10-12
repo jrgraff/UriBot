@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import requests, getpass
-
+import requests
 from bs4 import BeautifulSoup
 
 def getNotas(username, password):
@@ -31,6 +30,6 @@ def getNotas(username, password):
     dicionario = {}
     for tr in notas.findAll('tr',{'class': 'textos'}):
         td = [x.text for x in tr.findAll('td')]
-        dicionario['{2}'.format(*td)] = ('Faltas: {3} Nota 1: {7} Nota 2: {8} Nota 3: {9} Méd.Final: {10}'.format(*td))
+        dicionario[u'{2}'.format(*td)] = (u'Faltas: {3} Nota 1: {7} Nota 2: {8} Nota 3: {9} Méd.Final: {10}'.format(*td))
 
     return dicionario
