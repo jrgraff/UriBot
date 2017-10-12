@@ -36,6 +36,6 @@ notasOld = getNotas(pasta, senha)
 print('Verificando...')
 
 while 1:
-    if(now.hour < 21) and (now.hour > 8)
+    if 8 <= now.hour <= 22:
     	time.sleep(25)
     	bot.sendMessage(seu_id, verificaNota())
