@@ -25,11 +25,12 @@ def getNotas(username, password):
     r.url = r.url.replace("menu.aspx", link)
     output = s.get(r.url)
     soup = BeautifulSoup(output.content, 'html.parser')
-    notas = soup.find(id="DataGrid1")
+    dict = soup.find(id="DataGrid1")
 
-    dicionario = {}
-    for tr in notas.findAll('tr',{'class': 'textos'}):
+    notas = {}
+    for tr in dict.findAll('tr',{'class': 'textos'}):
         td = [x.text for x in tr.findAll('td')]
-        dicionario[u'{2}'.format(*td)] = (u'Faltas: {3} Nota 1: {7} Nota 2: {8} Nota 3: {9} Méd.Final: {10}'.format(*td))
+        if ('{13}'.format(*td) == 'CURSANDO'):
+            notas['{2}'.format(*td)] = ('Nota 1: {7} Nota 2: {8} Nota 3: {9} Exame: {11}'.format(*td))
 
-    return dicionario
+    return notas

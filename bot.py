@@ -1,23 +1,25 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
+#-*- coding: utf-8 -*-
 
 import sys
 import telepot
 import time, datetime
+
+from random import randint
 from urinotas import getNotas
 
-now = datetime.datetime.now()
-
-pasta = pasta
-senha = senha
-meu_id = asdasd
+pasta = sua_pasta
+senha = sua_senha
+meu_id = id_do_seu_grupo
 
 def verificaNota():
     try:
-        if notasOld == getNotas(pasta, senha):
-	    return "False"
-        return "True"
+        for key in notasOld.keys():
+            if notasOld[key] != getNotas(pasta, senha)[key]:
+                return "Notas de %s lançadas" % key
+        return "False"
     except:
-        return "Verifique o codigo pois aconteceu algum erro"
+        return "ETA PORRA DEU ERRO AQUI VÉI!!"
 
 def handle(msg):
     command = msg['text']
@@ -25,17 +27,22 @@ def handle(msg):
     chat_id = msg['chat']['id']
 
     if command == '/start':
-        bot.sendMessage(chat_id, "Não sei como você me achou mas eu só funciono para meu criador. Me desculpe", reply_to_message_id = msg_id)
+        bot.sendMessage(chat_id, "Hi, It's %s" % time.ctime(), reply_to_message_id = msg_id)
 
 TOKEN = sys.argv[1]  # get token from command-line
 
 bot = telepot.Bot(TOKEN)
 bot.message_loop(handle)
-notasOld = getNotas(pasta, senha)
 
-print('Verificando...')
+#log para controle
+notasOld = getNotas(pasta, senha)
+print(notasOld.keys())
 
 while 1:
+    time.sleep(randint(1500, 4000))
+    now = datetime.datetime.now()
     if 8 <= now.hour <= 22:
-    	time.sleep(25)
-    	bot.sendMessage(seu_id, verificaNota())
+        status = verificaNota()
+        bot.sendMessage(meu_id, status)
+        #log para controle
+        print("Verificado as: %s - %s" % (time.ctime(), status)) 
