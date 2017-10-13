@@ -14,8 +14,10 @@ meu_id = id_do_seu_grupo
 
 def verificaNota():
     try:
-        for key in notasOld.keys():
-            if notasOld[key] != getNotas(pasta, senha)[key]:
+        notas = getNotas(pasta, senha)
+        for key in notas.keys():
+            if notasOld[key] != notas[key]:
+                notasOld = notas
                 return "Notas de %s lançadas" % key
         return "False"
     except:
