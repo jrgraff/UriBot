@@ -8,20 +8,22 @@ import time, datetime
 from random import randint
 from urinotas import getNotas
 
-pasta = sua_pasta
-senha = sua_senha
-meu_id = id_do_seu_grupo
+pasta = #sua_pasta
+senha = #sua_senha
+meu_id = #id_do_seu_grupo
 
 def verificaNota():
     try:
+        global notasOld
         notas = getNotas(pasta, senha)
         for key in notas.keys():
             if notasOld[key] != notas[key]:
                 notasOld = notas
-                return "Notas de %s lançadas" % key
-        return "False"
-    except:
-        return "ETA PORRA DEU ERRO AQUI VÉI!!"
+                return "Notas de %s lançadas!" % key
+        return "false"
+
+    except Exception as e:
+        return str(e)
 
 def handle(msg):
     command = msg['text']
@@ -45,6 +47,8 @@ while 1:
     now = datetime.datetime.now()
     if 8 <= now.hour <= 22:
         status = verificaNota()
-        bot.sendMessage(meu_id, status)
+        if status != 'false':
+            bot.sendMessage(meu_id, status)
+
         #log para controle
         print("Verificado as: %s - %s" % (time.ctime(), status)) 
