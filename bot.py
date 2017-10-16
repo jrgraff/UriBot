@@ -8,9 +8,13 @@ import time, datetime
 from random import randint
 from urinotas import getNotas
 
+nVersao = "Beta1.0.1"
+
 pasta = #sua_pasta
-senha = #sua_senha
-meu_id = #id_do_seu_grupo
+senha = #"sua_senha"
+grupo_id = #id_do_seu_grupo
+meu_id = #id_adm
+permissao = [str(meu_id), "dos", "usuarios", "permitidos"] #Id usuarios que podem utilizar os comandos
 
 def verificaNota():
     try:
@@ -18,20 +22,33 @@ def verificaNota():
         notas = getNotas(pasta, senha)
         for key in notas.keys():
             if notasOld[key] != notas[key]:
-                notasOld = notas
-                return "Notas de %s lançadas!" % key
-        return "false"
+                bot.sendMessage(grupo_id, "Notas de %s lançadas!" % key)
+                return notas
+
+        bot.sendMessage(meu_id, "Verificado as: %s" % (time.ctime())) #Log para cotrole
+        return notasOld
 
     except Exception as e:
-        return str(e)
+        bot.sendMessage(meu_id, str(e))
+        return notasOld
 
 def handle(msg):
-    command = msg['text']
+    try:
+        command = msg['text']
+    except:
+        command = "ARQUIVO"
     msg_id = msg['message_id']
     chat_id = msg['chat']['id']
+    user_id = msg['from']['id']
 
-    if command == '/start':
-        bot.sendMessage(chat_id, "Hi, It's %s" % time.ctime(), reply_to_message_id = msg_id)
+    if any(str(user_id) in s for s in permissao) and command == '/start':
+         bot.sendMessage(meu_id, "Hi! It's %s" % (time.ctime()), reply_to_message_id = msg_id)
+    elif any(str(user_id) in s for s in permissao) and command == '/atualizar':
+         try:
+            notasOld = verificaNota(grupo_id, meu_id, notasOld)
+            bot.sendMessage(grupo_id, "Atualizado", reply_to_message_id = msg_id)
+         except Exception as e:
+            bot.sendMessage(meu_id, str(e))
 
 TOKEN = sys.argv[1]  # get token from command-line
 
@@ -40,15 +57,11 @@ bot.message_loop(handle)
 
 #log para controle
 notasOld = getNotas(pasta, senha)
+print("Iniciado... Buscando atualizações para materias abaixo")
 print(notasOld.keys())
 
 while 1:
-    time.sleep(randint(1500, 4000))
+    time.sleep(randint(2000, 4500))
     now = datetime.datetime.now()
-    if 8 <= now.hour <= 22:
-        status = verificaNota()
-        if status != 'false':
-            bot.sendMessage(meu_id, status)
-
-        #log para controle
-        print("Verificado as: %s - %s" % (time.ctime(), status)) 
+    if (8 <= now.hour <= 22) and now.weekday() != 6:
+        notasOld = verificaNota(grupo_id, meu_id, notasOld)
