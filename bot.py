@@ -8,8 +8,6 @@ import time, datetime
 from random import randint
 from urinotas import getNotas
 
-nVersao = "Beta1.0.1"
-
 pasta = #sua_pasta
 senha = #"sua_senha"
 grupo_id = #id_do_seu_grupo
@@ -18,9 +16,8 @@ permissao = [str(meu_id), "dos", "usuarios", "permitidos"] #Id usuarios que pode
 
 def verificaNota():
     try:
-        global notasOld
         notas = getNotas(pasta, senha)
-        for key in notas.keys():
+        for key in notasOld.keys():
             if notasOld[key] != notas[key]:
                 bot.sendMessage(grupo_id, "Notas de %s lançadas!" % key)
                 return notas
@@ -46,7 +43,7 @@ def handle(msg):
     elif any(str(user_id) in s for s in permissao) and command == '/atualizar':
          try:
             notasOld = verificaNota(grupo_id, meu_id, notasOld)
-            bot.sendMessage(grupo_id, "Atualizado", reply_to_message_id = msg_id)
+            bot.sendMessage(user_id, "Atualizado", reply_to_message_id = msg_id)
          except Exception as e:
             bot.sendMessage(meu_id, str(e))
 
